@@ -1,0 +1,30 @@
+{
+  "name": "ebac-shop-quality-assurance",
+  "version": "1.0.0",
+  "description": "ebac-shop-quality-assurance é um projeto de Engenharia de Qualidade desenvolvido no contexto do curso da EBAC, com o objetivo de aplicar boas práticas de garantia da qualidade em um sistema de e-commerce. O projeto contempla testes automatizados web e de API, organizados de forma modular, utilizando Cypress em ambiente Node.js, com foco na validação de regras de negócio, rastreabilidade de requisitos e melhoria contínua da qualidade do software.",
+  "homepage": "https://github.com/Eduferr/ebac-shop-quality-assurance#readme",
+  "bugs": {
+    "url": "https://github.com/Eduferr/ebac-shop-quality-assurance/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eduferr/ebac-shop-quality-assurance.git"
+  },
+  "license": "MIT",
+  "author": "EduardoFerreira",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run"
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^24.0.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
+    "@shelex/cypress-allure-plugin": "^2.41.2",
+    "allure-commandline": "^2.36.0",
+    "cypress": "^15.7.1",
+    "dotenv": "^17.2.3",
+    "esbuild": "^0.27.1",
+    "faker": "^6.6.6"
+  }
+}
