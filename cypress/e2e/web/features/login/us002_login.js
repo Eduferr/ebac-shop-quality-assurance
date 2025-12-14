@@ -10,6 +10,8 @@ Before(() => {
   tentativaAtual = 0;
 });
 
+/* ---------- Given ---------- */
+
 // Step que acessa a tela de login
 Given("que o usuário acessa a tela de login", () => {
   LoginActions.acessarTelaLogin();

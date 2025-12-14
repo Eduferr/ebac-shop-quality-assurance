@@ -25,23 +25,16 @@ module.exports = defineConfig({
         ? "cypress/e2e/api/features/**/*.feature"
         : "cypress/e2e/web/features/**/*.feature",
 
+    // Define variáveis de ambiente acessíveis nos testes via Cypress.env('VARIAVEL')
+    env: {
+      USER: process.env.CYPRESS_USER,
+      PASSWORD: process.env.CYPRESS_PASSWORD,
+    },
+
     // Função executada antes da inicialização dos testes. Usada para registrar plugins e configurações globais
     async setupNodeEvents(on, config) {
-
-      // Variáveis de ambiente acessíveis nos testes via Cypress.env(). Ex: Cypress.env('USER')
-      config.env.USER = process.env.CYPRESS_USER;
-      config.env.PASSWORD = process.env.CYPRESS_PASSWORD;
-
-      // Configuração do Cucumber (v24+)
-      // nonGlobalStepDefinitions: true indica que os arquivos de step devem estar na MESMA pasta da feature
-      // (colocalização: feature + step juntos)
-      // config.env.cucumber = {
-      //   nonGlobalStepDefinitions: true,
-      // };
-
       // Registra o plugin do Cucumber no Cypress. Deve ser chamado antes do bundler
       await addCucumberPreprocessorPlugin(on, config);
-
       // Define o preprocessador de arquivos. Usa esbuild para compilar os arquivos .feature e .js
       on(
         "file:preprocessor",
@@ -49,7 +42,6 @@ module.exports = defineConfig({
           plugins: [createEsbuildPlugin(config)],
         })
       );
-
       // Retorna o config final para o Cypress
       return config;
     },
