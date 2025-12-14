@@ -1,6 +1,6 @@
 import { Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocessor";
-import LoginActions from "../pages/actions/LoginActions";
-import LoginPage from "../pages/pageObjects/LoginPage";
+import LoginActions from "../../pages/actions/LoginActions";
+import LoginPage from "../../pages/pageObjects/LoginPage";
 
 // Contador de tentativas (escopo do arquivo)
 let tentativaAtual = 0;
