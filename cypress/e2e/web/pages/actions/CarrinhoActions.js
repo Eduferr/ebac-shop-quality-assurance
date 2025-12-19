@@ -40,21 +40,24 @@ class CarrinhoActions {
         }
     }
 
-    validarLimiteCompra(produto) {
-        const { quantidade } = produto;
+    validarLimiteCompra() {
+        CarrinhoPage.valorTotalCarrinho().then((valorTotal) => {
 
-        if (quantidade <= 10) {
-            // Comportamento esperado: acesso permitido ao Checkout
-            cy.get('.page-title')
-                .should('be.visible')
-                .and('contain.text', 'Checkout');
-        } else {
-            // Regra de negócio não aplicada pelo sistema → falha forçada
-            throw new Error(
-                'Regra de negócio violada: o sistema permitiu avançar para o Checkout com valor total acima de R$ 990,00.'
-            );
-        }
+            if (valorTotal <= 990) {
+                // Comportamento esperado: acesso permitido ao Checkout
+                cy.get('.page-title')
+                    .should('be.visible')
+                    .and('contain.text', 'Checkout');
+            } else {
+                // Regra de negócio não aplicada pelo sistema → falha forçada
+                throw new Error(
+                    `Regra de negócio violada: o sistema permitiu avançar para o Checkout com valor de R$ ${valorTotal.toFixed(2)}, excendo o limite de R$ 990,00.`
+                );
+            }
+
+        });
     }
+
 }
 
 export default new CarrinhoActions();
