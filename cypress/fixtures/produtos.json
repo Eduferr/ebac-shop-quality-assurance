@@ -1,14 +1,20 @@
 [
   {
+    "nome": "Orion Two-Tone Fitted Jacket",
+    "tamanho": "S",
+    "cor": "Yellow",
+    "quantidade": 5
+  },
+    {
     "nome": "Lando Gym Jacket",
-    "tamanho": "XS",
-    "cor": "Gray",
-    "quantidade": 2
+    "tamanho": "M",
+    "cor": "Green",
+    "quantidade": 5
   },
   {
-    "nome": "Prima Compete Bra Top",
+    "nome": "Ingrid Running Jacket",
     "tamanho": "S",
-    "cor": "Purple",
+    "cor": "White",
     "quantidade": 2
   },
   {
@@ -22,5 +28,17 @@
     "tamanho": "XL",
     "cor": "Green",
     "quantidade": 2
+  },
+  {
+    "nome": "Livingston All-Purpose Tight",
+    "tamanho": "34",
+    "cor": "Red",
+    "quantidade": 5
+  },
+  {
+    "nome": "Marco Lightweight Active Hoodie",
+    "tamanho": "XL",
+    "cor": "Lavender",
+    "quantidade": 5
   }
 ]

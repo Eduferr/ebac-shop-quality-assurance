@@ -29,7 +29,8 @@ class CarrinhoPage {
     }
 
     checkoutButton() {
-        return cy.get('.checkout-button');
+        cy.get('.checkout-button').click();
+        cy.get('.showlogin').click();
     }
 
     loginLinkCheckout() {

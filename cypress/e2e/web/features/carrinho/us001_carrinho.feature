@@ -2,27 +2,41 @@ Feature: Carrinho de Compras
 
     Scenario Outline: Validar limite de compra do produto - <Descricao>
         Given que o usuário acessa a página de produtos
-        When busca um produto pelo nome
+        When busca um produto pelo nome na posição <posicao>
         And seleciona suas características com quantidade <quantidade>
         And adiciona o produto ao carrinho
         Then o sistema deve validar o limite de quantidade
 
         Examples:
-            | Descricao           | quantidade |
-            | Até 10 unidades     | 2          |
-            | Mais de 10 unidades | 11         |
+            | Descricao           | posicao | quantidade |
+            | Até 10 unidades     | 0       | 2          |
+            | Mais de 10 unidades | 0       | 11         |
 
 
-# Scenario: Não permitir adicionar mais de 10 itens do mesmo produto
-#     When seleciona a quantidade de 11 itens
-#     And adiciona o produto ao carrinho
-#     Then o sistema deve exibir mensagem de limite máximo de itens
+    Scenario Outline: Validar limite de valor total do carrinho - <Descricao>
+        Given que o usuário acessa a página de produtos
+        When busca um produto pelo nome na posição <posicao>
+        And seleciona suas características com quantidade <quantidade>
+        And adiciona o produto ao carrinho
+        And acessa o carrinho
+        And tenta finalizar a compra
+        Then o sistema deve validar o limite de compra
 
-# Scenario: Não permitir finalizar compra com valor acima de R$ 990
-#     When adiciona produtos ao carrinho até ultrapassar R$ 990
-#     And conclui a compra
-#     Then o sistema deve bloquear a finalização do pedido
-#     And deve exibir mensagem de valor máximo excedido
+        Examples:
+            | Descricao             | posicao | quantidade |
+            | Valor até R$ 990      | 1       | 10         |
+            | Valor acima de R$ 990 | 2       | 12         |
+
+
+
+
+
+
+
+
+
+
+
 
 # Scenario Outline: Aplicar cupom de 10% para compras entre R$ 200 e R$ 600
 #     When adiciona produtos ao carrinho com valor total de <valor>
