@@ -41,17 +41,29 @@ class CarrinhoActions {
     }
 
     validarLimiteCompra() {
-        CarrinhoPage.valorTotalCarrinho().then((valorTotal) => {
+        CarrinhoPage.valorTotalCarrinho().then((text) => {
+
+            const valorTotal = Number(
+                text
+                    .replace(/\s/g, '')
+                    .replace('R$', '')
+                    .replace(/\./g, '')
+                    .replace(',', '.')
+            );
+
+            if (Number.isNaN(valorTotal)) {
+                throw new Error(
+                    `Falha ao converter valor monetário: "${text}"`
+                );
+            }
 
             if (valorTotal <= 990) {
-                // Comportamento esperado: acesso permitido ao Checkout
                 cy.get('.page-title')
                     .should('be.visible')
                     .and('contain.text', 'Checkout');
             } else {
-                // Regra de negócio não aplicada pelo sistema → falha forçada
                 throw new Error(
-                    `Regra de negócio violada: o sistema permitiu avançar para o Checkout com valor de R$ ${valorTotal.toFixed(2)}, excendo o limite de R$ 990,00.`
+                    `Regra de negócio violada: o sistema permitiu avançar para o Checkout com valor total de R$ ${valorTotal.toFixed(2)}, excedendo o limite de R$ 990,00.`
                 );
             }
 

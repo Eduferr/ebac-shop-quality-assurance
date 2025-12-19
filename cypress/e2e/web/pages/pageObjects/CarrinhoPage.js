@@ -64,37 +64,12 @@ class CarrinhoPage {
         return cy.get('.woocommerce-error');
     }
 
-    /**
-       * Retorna o valor total do carrinho (posição 7)
-       * Ex.: "R$\n42,00" → 42.00
-       */
+    // Retorna o valor total do carrinho (posição 7)
     valorTotalCarrinho() {
         return cy
             .get('.woocommerce-Price-amount.amount')
             .eq(7)
             .invoke('text')
-            .then((text) => this.parseCurrencyBRL(text));
-    }
-
-    /**
-     * Converte string monetária pt-BR para Number
-     */
-    parseCurrencyBRL(text) {
-        const valor = Number(
-            text
-                .replace(/\s/g, '')     // remove espaços e quebras de linha
-                .replace('R$', '')      // remove símbolo da moeda
-                .replace(/\./g, '')     // remove separador de milhar
-                .replace(',', '.')      // troca vírgula por ponto
-        );
-
-        if (Number.isNaN(valor)) {
-            throw new Error(
-                `Falha ao converter valor monetário: "${text}"`
-            );
-        }
-
-        return valor;
     }
 }
 
