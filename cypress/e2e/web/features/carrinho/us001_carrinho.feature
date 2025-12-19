@@ -28,35 +28,3 @@ Feature: Carrinho de Compras
             | Valor acima de R$ 990 | 2       | 12         |
 
 
-
-
-
-
-
-
-
-
-
-
-# Scenario Outline: Aplicar cupom de 10% para compras entre R$ 200 e R$ 600
-#     When adiciona produtos ao carrinho com valor total de <valor>
-#     And conclui a compra
-#     Then o sistema deve aplicar cupom de desconto de 10%
-
-#     Examples:
-#         | valor |
-#         | 250   |
-#         | 400   |
-#         | 600   |
-
-# Scenario Outline: Aplicar cupom de 15% para compras acima de R$ 600
-#     When adiciona produtos ao carrinho com valor total de <valor>
-#     And conclui a compra
-#     Then o sistema deve aplicar cupom de desconto de 15%
-
-#     Examples:
-#         | valor |
-#         | 650   |
-#         | 800   |
-#         | 990   |
-
