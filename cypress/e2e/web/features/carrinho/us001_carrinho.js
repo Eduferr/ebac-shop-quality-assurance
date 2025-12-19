@@ -39,35 +39,6 @@ When('acessa o carrinho', () => {
     CarrinhoActions.verCarrinho();
 });
 
-When('adiciona produtos ao carrinho para ultrapassar o limite com quantidade {int}', (quantidade) => {
-    cy.fixture('produtos').then((produtos) => {
-        const produtosSelecionados = produtos.slice(4, 7); // posições 4,5,6
-
-        produtosSelecionados.forEach((item, index) => {
-            produto = item;
-            produto.quantidade = quantidade;
-
-            // 🟠 Destaque visível no log
-            cy.log(`🟠 Adicionando o ${index + 1} produto`);
-
-            // Busca do produto pelo nome
-            CarrinhoActions.buscarProduto(produto.nome);
-
-            // Seleção das características
-            CarrinhoActions.selecionarCaracteristicas(
-                produto.tamanho,
-                produto.cor,
-                quantidade
-            );
-
-            // Adição ao carrinho
-            CarrinhoActions.adicionarAoCarrinho();
-
-        });
-    });
-}
-);
-
 When('tenta finalizar a compra', () => {
     CarrinhoActions.concluirCompra();
 });

@@ -22,7 +22,7 @@ class CarrinhoActions {
     }
 
     concluirCompra() {
-        CarrinhoPage.checkoutButton();
+        CarrinhoPage.checkoutButton().click();
     }
 
     validarLimiteQuantidade(produto) {
