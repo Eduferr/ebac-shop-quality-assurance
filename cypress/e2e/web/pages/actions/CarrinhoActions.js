@@ -66,10 +66,7 @@ class CarrinhoActions {
                     `Regra de negócio violada: o sistema permitiu avançar para o Checkout com valor total de R$ ${valorTotal.toFixed(2)}, excedendo o limite de R$ 990,00.`
                 );
             }
-
         });
     }
-
 }
-
 export default new CarrinhoActions();

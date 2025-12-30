@@ -2,15 +2,16 @@
 
 Funcionalidade: Login de usuário
 
-    Cenário: Login com usuário ativo
+    Contexto: 
         Dado que o usuário acessa a tela de login
+
+    Cenário: Login com usuário ativo
         Quando realiza login com usuário ativo
         Então o login deve ser realizado com sucesso
 
     Esquema do Cenário: Login inválido - <descricao>
-        Dado que o usuário acessa a tela de login
         Quando realiza login com usuário "<usuario>" e senha "<senha>"
-        Então deve exibir mensagem de erro de login
+        Então deve exibir mensagem de erro de login para o usuário "<usuario>"
 
         Exemplos:
             | descricao        | usuario         | senha          |
@@ -18,7 +19,6 @@ Funcionalidade: Login de usuário
             | Senha inválida   | admin           | senha_invalida |
 
     Cenário: Sistema deve bloquear conta após 3 tentativas inválidas
-        Dado que o usuário acessa a tela de login
         Quando realiza login com usuário "admin" e senha "senha_invalida"
         E realiza login com usuário "admin" e senha "senha_invalida"
         E realiza login com usuário "admin" e senha "senha_invalida"

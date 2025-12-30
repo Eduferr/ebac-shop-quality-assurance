@@ -2,8 +2,10 @@
 
 Funcionalidade: Carrinho de Compras
 
-    Esquema do Cenário: Validar limite de compra do produto - <Descricao>
+    Contexto:
         Dado que o usuário acessa a página de produtos
+
+    Esquema do Cenário: Validar limite de compra do produto - <Descricao>        
         Quando busca um produto pelo nome na posição <posicao>
         E seleciona suas características com quantidade <quantidade>
         E adiciona o produto ao carrinho
@@ -16,7 +18,6 @@ Funcionalidade: Carrinho de Compras
 
 
     Esquema do Cenário: Validar limite de valor total - <Descricao>
-        Dado que o usuário acessa a página de produtos
         Quando busca um produto pelo nome na posição <posicao>
         E seleciona suas características com quantidade <quantidade>
         E adiciona o produto ao carrinho

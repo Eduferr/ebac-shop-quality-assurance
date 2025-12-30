@@ -5,7 +5,7 @@ import LoginPage from "../../pages/pageObjects/LoginPage";
 // Contador de tentativas (escopo do arquivo)
 let tentativaAtual = 0;
 
-// Resetando o contador antes de CADA cenário
+// Resetando o contador antes de cada cenário
 Before(() => {
   tentativaAtual = 0;
 });
@@ -28,13 +28,11 @@ When("realiza login com usuário ativo", () => {
 });
 
 // Step para login com dados fornecidos pelo cenário (usuário e senha)
-When(
-  "realiza login com usuário {string} e senha {string}",
-  (usuario, senha) => {
-    tentativaAtual++; // Incrementando o contador de tentativas
-    cy.log(`🟠Tentativa ${tentativaAtual}: login com usuário ${usuario}`);
-    LoginActions.realizarLogin(usuario, senha);
-  }
+When("realiza login com usuário {string} e senha {string}", (usuario, senha) => {
+  tentativaAtual++; // Incrementando o contador de tentativas
+  cy.log(`🟠Tentativa ${tentativaAtual}: login com usuário ${usuario}`);
+  LoginActions.realizarLogin(usuario, senha);
+}
 );
 
 /* ---------- THEN ---------- */
@@ -45,11 +43,31 @@ Then("o login deve ser realizado com sucesso", () => {
 });
 
 // Validação de erro de login
-Then("deve exibir mensagem de erro de login", () => {
-  LoginPage.getErrorMessage()
-    .should("be.visible")
-    .and("contain.text", "Erro");
-});
+Then(
+  "deve exibir mensagem de erro de login para o usuário {string}",
+  (usuario) => {
+    LoginPage.getErrorMessage()
+      .should("be.visible")
+      .then(($el) => {
+        const texto = $el.text();
+
+        if (texto.includes("não está registrado")) {
+          expect(texto).to.contain(
+            `Erro: O usuário ${usuario} não está registrado neste site.`
+          );
+        } else if (texto.includes("senha informada")) {
+          expect(texto).to.contain(
+            `Erro: A senha informada para o usuário ${usuario} está incorreta`
+          );
+        } else {
+          throw new Error(
+            "Mensagem de erro inesperada exibida no login."
+          );
+        }
+      });
+  }
+);
+
 
 // Validação de bloqueio após 3 tentativas inválidas
 Then("o sistema deve bloquear a conta por 15 minutos", () => {
