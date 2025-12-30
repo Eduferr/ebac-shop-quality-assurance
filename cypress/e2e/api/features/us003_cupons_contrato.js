@@ -4,17 +4,17 @@ import { cupomSchema } from '../services/utils/schemas/cupom.schema';
 
 let response;
 
-/* ---------- GIVEN ---------- */
+/* ---------- GIVEN (Dado) ---------- */
 Given('que o admin está autenticado na API', () => { });
 
-/* ---------- WHEN ---------- */
+/* ---------- WHEN (Quando) ---------- */
 When('realizar a requisição de listagem de cupons', () => {
     CuponsService.listarCupons().then((res) => {
         response = res;
     });
 });
 
-/* ---------- THEN ---------- */
+/* ---------- THEN (Então) ---------- */
 Then('o contrato do cupom deve estar de acordo com o esperado', () => {
     expect(response.status).to.eq(200);
 

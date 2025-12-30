@@ -1,24 +1,25 @@
-Feature: Login de usuário
+#language: pt
 
-    Scenario: Login com usuário ativo
-        Given que o usuário acessa a tela de login
-        When realiza login com usuário ativo
-        Then o login deve ser realizado com sucesso
+Funcionalidade: Login de usuário
 
-    Scenario Outline: Login inválido - <descricao>
-        Given que o usuário acessa a tela de login
-        When realiza login com usuário "<usuario>" e senha "<senha>"
-        Then deve exibir mensagem de erro de login
+    Cenário: Login com usuário ativo
+        Dado que o usuário acessa a tela de login
+        Quando realiza login com usuário ativo
+        Então o login deve ser realizado com sucesso
 
-        Examples:
+    Esquema do Cenário: Login inválido - <descricao>
+        Dado que o usuário acessa a tela de login
+        Quando realiza login com usuário "<usuario>" e senha "<senha>"
+        Então deve exibir mensagem de erro de login
+
+        Exemplos:
             | descricao        | usuario         | senha          |
             | Usuário inválido | usuario_inativo | senha_invalida |
             | Senha inválida   | admin           | senha_invalida |
 
-
-    Scenario: Sistema deve bloquear conta após 3 tentativas inválidas
-        Given que o usuário acessa a tela de login
-        When realiza login com usuário "admin" e senha "senha_invalida"
-        And realiza login com usuário "admin" e senha "senha_invalida"
-        And realiza login com usuário "admin" e senha "senha_invalida"
-        Then o sistema deve bloquear a conta por 15 minutos
+    Cenário: Sistema deve bloquear conta após 3 tentativas inválidas
+        Dado que o usuário acessa a tela de login
+        Quando realiza login com usuário "admin" e senha "senha_invalida"
+        E realiza login com usuário "admin" e senha "senha_invalida"
+        E realiza login com usuário "admin" e senha "senha_invalida"
+        Então o sistema deve bloquear a conta por 15 minutos

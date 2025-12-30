@@ -1,30 +1,30 @@
-Feature: Carrinho de Compras
+#language: pt
 
-    # Scenario Outline: Validar limite de compra do produto - <Descricao>
-    #     Given que o usuário acessa a página de produtos
-    #     When busca um produto pelo nome na posição <posicao>
-    #     And seleciona suas características com quantidade <quantidade>
-    #     And adiciona o produto ao carrinho
-    #     Then o sistema deve validar o limite de quantidade
+Funcionalidade: Carrinho de Compras
 
-    #     Examples:
-    #         | Descricao           | posicao | quantidade |
-    #         | Até 10 unidades     | 0       | 2          |
-    #         | Mais de 10 unidades | 0       | 11         |
+    Esquema do Cenário: Validar limite de compra do produto - <Descricao>
+        Dado que o usuário acessa a página de produtos
+        Quando busca um produto pelo nome na posição <posicao>
+        E seleciona suas características com quantidade <quantidade>
+        E adiciona o produto ao carrinho
+        Então o sistema deve validar o limite de quantidade
 
-
-    Scenario Outline: Validar limite de valor total - <Descricao>
-        Given que o usuário acessa a página de produtos
-        When busca um produto pelo nome na posição <posicao>
-        And seleciona suas características com quantidade <quantidade>
-        And adiciona o produto ao carrinho
-        And acessa o carrinho
-        And tenta finalizar a compra
-        Then o sistema deve validar o limite de compra
-
-        Examples:
-            | Descricao                         | posicao | quantidade |
-            | Até R$ 990,00 - Compra válida        | 1       | 10         |
-            | Acima de R$ 990,00 - Compra Inválida | 2       | 12         |
+        Exemplos:
+            | Descricao                             | posicao | quantidade |
+            | Até 10 unidades - Compra válida       | 0       | 2          |
+            | Mais de 10 unidades - Compra inválida | 0       | 11         |
 
 
+    Esquema do Cenário: Validar limite de valor total - <Descricao>
+        Dado que o usuário acessa a página de produtos
+        Quando busca um produto pelo nome na posição <posicao>
+        E seleciona suas características com quantidade <quantidade>
+        E adiciona o produto ao carrinho
+        E acessa o carrinho
+        E tenta finalizar a compra
+        Então o sistema deve validar o limite de compra
+
+        Exemplos:
+            | Descricao                             | posicao | quantidade |
+            | Até R$ 990,00 - Compra válida         | 1       | 10         |
+            | Acima de R$ 990,00 - Compra inválida  | 2       | 12         |

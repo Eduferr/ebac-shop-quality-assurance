@@ -1,16 +1,13 @@
-Feature: Serviço de Cupons - EBAC SHOP
+#language: pt
 
-    Como admin da EBAC-SHOP
-    Quero listar os cupons cadastrados
-    Para validar o serviço de cupons via API
+Funcionalidade: Serviço de Cupons - EBAC SHOP
 
-    Scenario: Listar todos os cupons cadastrados
-        Given que o admin está autenticado na API
-        When realizar a requisição de listagem de cupons
-        Then a API deve retornar a lista de cupons com sucesso
+    Cenário: Listar todos os cupons cadastrados
+        Dado que o admin está autenticado na API
+        Quando realizar a requisição de listagem de cupons
+        Então a API deve retornar a lista de cupons com sucesso
 
-    Scenario: Cadastrar um novo cupom com sucesso
-        Given que o admin está autenticado na API
-        When realizar o cadastro de um novo cupom
-        Then a API deve retornar o cupom criado com sucesso
-
+    Cenário: Cadastrar um novo cupom com sucesso
+        Dado que o admin está autenticado na API
+        Quando realizar o cadastro de um novo cupom
+        Então a API deve retornar o cupom criado com sucesso
