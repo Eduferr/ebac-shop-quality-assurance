@@ -9,24 +9,28 @@ const {
 
 require('dotenv').config();
 
+//Para verificar se a variável de autenticação está sendo carregada corretamente
+//console.log('BASIC_AUTH no config:', process.env.BASIC_AUTH);
+
 const testType = process.env.TEST_TYPE || 'web';
 
 module.exports = defineConfig({
   e2e: {
     baseUrl: process.env.BASE_URL || 'http://lojaebac.ebaconline.art.br',
 
-    specPattern:
-      testType === 'api'
-        ? 'cypress/e2e/api/features/**/*.feature'
-        : 'cypress/e2e/web/features/**/*.feature',
+    // Carrega WEB + API
+    specPattern: [
+      'cypress/e2e/web/features/**/*.feature',
+      'cypress/e2e/api/features/**/*.feature'
+    ],
 
     supportFile: 'cypress/support/e2e.js',
 
     async setupNodeEvents(on, config) {
-      // REGISTRA O CUCUMBER
+      // registra o plugin do cucumber
       await addCucumberPreprocessorPlugin(on, config);
 
-      // REGISTRA O ESBUILD COM LOADER DE .FEATURE
+      // registrar o preprocessor do esbuild
       on(
         'file:preprocessor',
         createBundler({
@@ -34,9 +38,12 @@ module.exports = defineConfig({
         })
       );
 
-      // VARIÁVEIS DE AMBIENTE (devem ficar AQUI)
+      // variáveis de ambiente UI a partir do .env
       config.env.USER = process.env.CYPRESS_USER;
       config.env.PASSWORD = process.env.CYPRESS_PASSWORD;
+
+      // Variavel de ambiente API a partir do .env
+      config.env.BASIC_AUTH = process.env.BASIC_AUTH;
 
       return config;
     },
