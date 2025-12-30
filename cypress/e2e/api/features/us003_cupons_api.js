@@ -15,8 +15,23 @@ When('realizar a requisição de listagem de cupons', () => {
     });
 });
 
+When('realizar o cadastro de um novo cupom', () => {
+  CuponsService.criarCupom().then((res) => {
+    response = res;
+  });
+});
+
 /* ---------- THEN ---------- */
 Then('a API deve retornar a lista de cupons com sucesso', () => {
     expect(response.status).to.eq(200);
     expect(response.body).to.be.an('array');
 });
+
+Then('a API deve retornar o cupom criado com sucesso', () => {
+  expect(response.status).to.eq(201);
+  expect(response.body).to.have.property('id');
+  expect(response.body).to.have.property('code');
+  expect(response.body.discount_type).to.eq('fixed_product');
+});
+
+
