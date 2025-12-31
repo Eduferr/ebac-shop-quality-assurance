@@ -3,16 +3,19 @@ import CuponsService from '../services/cupons.service.js';
 
 let response;
 
-/* ---------- GIVEN ---------- */
+/* ================= GIVEN (Dado) ================= */
+
 Given('que o admin está autenticado na API', () => {
-    // Autenticação é implícita via header
+  // Autenticação é implícita via header
 });
 
-/* ---------- WHEN ---------- */
+
+/* ================= WHEN (Quando) ================= */
+
 When('realizar a requisição de listagem de cupons', () => {
-    CuponsService.listarCupons().then((res) => {
-        response = res;
-    });
+  CuponsService.listarCupons().then((res) => {
+    response = res;
+  });
 });
 
 When('realizar o cadastro de um novo cupom', () => {
@@ -21,10 +24,12 @@ When('realizar o cadastro de um novo cupom', () => {
   });
 });
 
-/* ---------- THEN ---------- */
+
+/* ================= THEN (Então) ================== */
+
 Then('a API deve retornar a lista de cupons com sucesso', () => {
-    expect(response.status).to.eq(200);
-    expect(response.body).to.be.an('array');
+  expect(response.status).to.eq(200);
+  expect(response.body).to.be.an('array');
 });
 
 Then('a API deve retornar o cupom criado com sucesso', () => {

@@ -3,12 +3,15 @@ import CarrinhoActions from '../../pages/actions/CarrinhoActions';
 
 let produto;
 
-/* ---------- GIVEN ---------- */
+/* ================= GIVEN (Dado) ================= */
+
 Given('que o usuário acessa a página de produtos', () => {
     cy.visit('/produtos');
 });
 
-/* ---------- WHEN ---------- */
+
+/* ================= WHEN (Quando) ================= */
+
 When('busca um produto pelo nome na posição {int}', (posicao) => {
     cy.fixture('produtos').then((produtos) => {
         produto = produtos[posicao];
@@ -47,33 +50,34 @@ When('aplica o cupom de desconto {string}', (cupom) => {
 });
 
 When(
-  'adiciona produtos ao carrinho com quantidades {int}, {int}, {int}',
-  (q1, q2, q3) => {
+    'adiciona produtos ao carrinho com quantidades {int}, {int}, {int}',
+    (q1, q2, q3) => {
 
-      const posicoes = [
-          { posicao: 4, quantidade: q1 },
-          { posicao: 5, quantidade: q2 },
-          { posicao: 6, quantidade: q3 },
-      ];
+        const posicoes = [
+            { posicao: 4, quantidade: q1 },
+            { posicao: 5, quantidade: q2 },
+            { posicao: 6, quantidade: q3 },
+        ];
 
-      cy.fixture('produtos').then((produtos) => {
+        cy.fixture('produtos').then((produtos) => {
 
-          posicoes.forEach(({ posicao, quantidade }) => {
-              if (quantidade <= 0) return;
-              const produtoAtual = produtos[posicao];
-              CarrinhoActions.buscarProduto(produtoAtual.nome);
-              CarrinhoActions.selecionarCaracteristicas(
-                  produtoAtual.tamanho,
-                  produtoAtual.cor,
-                  quantidade
-              );
-              CarrinhoActions.adicionarAoCarrinho();
-          });
-      });
-  }
+            posicoes.forEach(({ posicao, quantidade }) => {
+                if (quantidade <= 0) return;
+                const produtoAtual = produtos[posicao];
+                CarrinhoActions.buscarProduto(produtoAtual.nome);
+                CarrinhoActions.selecionarCaracteristicas(
+                    produtoAtual.tamanho,
+                    produtoAtual.cor,
+                    quantidade
+                );
+                CarrinhoActions.adicionarAoCarrinho();
+            });
+        });
+    }
 );
 
-/* ---------- THEN ---------- */
+
+/* ================= THEN (Então) ================== */
 
 Then('o sistema deve validar o limite de quantidade', () => {
     CarrinhoActions.validarLimiteQuantidade(produto);

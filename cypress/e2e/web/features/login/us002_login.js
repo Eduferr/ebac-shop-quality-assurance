@@ -2,76 +2,71 @@ import { Given, When, Then, Before } from "@badeball/cypress-cucumber-preprocess
 import LoginActions from "../../pages/actions/LoginActions";
 import LoginPage from "../../pages/pageObjects/LoginPage";
 
-// Contador de tentativas (escopo do arquivo)
-let tentativaAtual = 0;
+// =========================
+// GIVEN (Dado)
+// =========================
 
-// Resetando o contador antes de cada cenário
-Before(() => {
-  tentativaAtual = 0;
-});
-
-/* ---------- Given ---------- */
-
-// Step que acessa a tela de login
+// Acesso à tela de login
 Given("que o usuário acessa a tela de login", () => {
   LoginActions.acessarTelaLogin();
 });
 
-/* ---------- WHEN ---------- */
+// =========================
+// WHEN (Quando)
+// =========================
 
-// Step para login com usuário ativo (usando .env)
-When("realiza login com usuário ativo", () => {
+// Login com usuário válido (credenciais do .env)
+When("realiza login com usuário Válido", () => {
   const usuario = Cypress.env("USER");
   const senha = Cypress.env("PASSWORD");
 
   LoginActions.realizarLogin(usuario, senha);
 });
 
-// Step para login com dados fornecidos pelo cenário (usuário e senha)
-When("realiza login com usuário {string} e senha {string}", (usuario, senha) => {
-  tentativaAtual++; // Incrementando o contador de tentativas
-  cy.log(`🟠Tentativa ${tentativaAtual}: login com usuário ${usuario}`);
-  LoginActions.realizarLogin(usuario, senha);
-}
+// Login com usuário e senha informados (inválidos)
+When(
+  "realiza login com usuário {string} e senha {string}",
+  (usuario, senha) => {
+    LoginActions.realizarLoginInvalido(usuario, senha);
+  }
 );
 
-/* ---------- THEN ---------- */
+// Realiza múltiplas tentativas inválidas de login
+When(
+  "realiza 3 tentativas de login com usuário {string} e senha {string}",
+  (usuario, senha) => {
+    LoginActions.realizarTentativasLogin(usuario, senha);
+  }
+);
 
-// Validação de login bem-sucedido
+// Tenta login válido após exceder o limite de tentativas
+When("realiza login correto para testar o bloqueio", () => {
+  LoginActions.tentarLoginValidoParaBloqueio();
+});
+
+// =========================
+// THEN (Então)
+// =========================
+
+// Validação de login realizado com sucesso
 Then("o login deve ser realizado com sucesso", () => {
   LoginPage.getAccountContent().should("be.visible");
 });
 
-// Validação de erro de login
+// Validação de erro de login (usuário não cadastrado ou senha inválida)
 Then(
   "deve exibir mensagem de erro de login para o usuário {string}",
   (usuario) => {
-    LoginPage.getErrorMessage()
-      .should("be.visible")
-      .then(($el) => {
-        const texto = $el.text();
+    LoginActions.validarErroLogin(usuario);
+  }
+);
 
-        if (texto.includes("não está registrado")) {
-          expect(texto).to.contain(
-            `Erro: O usuário ${usuario} não está registrado neste site.`
-          );
-        } else if (texto.includes("senha informada")) {
-          expect(texto).to.contain(
-            `Erro: A senha informada para o usuário ${usuario} está incorreta`
-          );
-        } else {
-          throw new Error(
-            "Mensagem de erro inesperada exibida no login."
-          );
-        }
-      });
+// Validação de bloqueio após tentativas consecutivas inválidas
+Then(
+  "deve exibir mensagem informando que a conta está bloqueada por 15 minutos",
+  () => {
+    LoginActions.validarContaBloqueada();
   }
 );
 
 
-// Validação de bloqueio após 3 tentativas inválidas
-Then("o sistema deve bloquear a conta por 15 minutos", () => {
-  LoginPage.getErrorMessage()
-    .should("be.visible")
-    .and("contain.text", "Conta Bloqueada por 15 minutos");
-});
