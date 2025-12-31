@@ -48,10 +48,6 @@ class CarrinhoPage {
         return cy.get('[name="woocommerce_checkout_place_order"]');
     }
 
-    successMessage() {
-        return cy.get('.woocommerce-message');
-    }
-
     orderSuccessMessage() {
         return cy.get('.woocommerce-notice');
     }
@@ -70,6 +66,14 @@ class CarrinhoPage {
             .get('.woocommerce-Price-amount.amount')
             .eq(7)
             .invoke('text')
+    }
+
+    couponInput() {
+        return cy.get('#coupon_code');
+    }
+
+    applyCouponButton() {
+        return cy.get('[name="apply_coupon"]');
     }
 }
 

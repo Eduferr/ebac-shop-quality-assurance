@@ -68,5 +68,64 @@ class CarrinhoActions {
             }
         });
     }
+
+    aplicarCupom(cupom) {
+        cy.get('#coupon_code')
+            .clear()
+            .type(cupom);
+
+        cy.get('[name="apply_coupon"]').click();
+    }
+
+validarAplicacaoCupom(cupom) {
+
+    // Aguarda até aparecer mensagem de sucesso OU erro
+    cy.get('.woocommerce-message, .woocommerce-error', { timeout: 10000 })
+        .should('be.visible')
+        .then(($el) => {
+
+            const texto = $el.text();
+
+            /* ===============================
+               SUCESSO
+            ================================ */
+            if ($el.hasClass('woocommerce-message')) {
+                expect(texto).to.contain(
+                    'Código de cupom aplicado com sucesso.'
+                );
+                return;
+            }
+
+            /* ===============================
+               ERRO
+            ================================ */
+            if ($el.hasClass('woocommerce-error')) {
+
+                if (cupom === 'techugo10') {
+                    expect(texto).to.satisfy((msg) =>
+                        msg.includes('O valor mínimo do pedido para este cupom é R$200,00') ||
+                        msg.includes('O valor máximo que pode ser gasto para este cupom é de R$600,00')
+                    );
+                    return;
+                }
+
+                if (cupom === 'techugo15') {
+                    expect(texto).to.contain(
+                        'O valor mínimo do pedido para este cupom é R$601,00'
+                    );
+                    return;
+                }
+            }
+
+            throw new Error(
+                'Mensagem inesperada retornada pelo sistema ao aplicar cupom.'
+            );
+        });
+}
+
+
+
+
+
 }
 export default new CarrinhoActions();
