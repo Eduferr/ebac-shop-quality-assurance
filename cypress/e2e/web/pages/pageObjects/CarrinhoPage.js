@@ -1,5 +1,8 @@
 class CarrinhoPage {
 
+    // =========================
+    // Busca / navegação
+    // =========================
     searchInput() {
         return cy.get('input[placeholder="Enter your search ..."]').eq(1);
     }
@@ -8,6 +11,9 @@ class CarrinhoPage {
         return cy.get('.search .button-group');
     }
 
+    // =========================
+    // Configuração do produto
+    // =========================
     sizeOption(tamanho) {
         return cy.get(`.button-variable-item-${tamanho}`);
     }
@@ -20,6 +26,9 @@ class CarrinhoPage {
         return cy.get('[name="quantity"]');
     }
 
+    // =========================
+    // Ações de carrinho
+    // =========================
     addToCartButton() {
         return cy.get('.single_add_to_cart_button');
     }
@@ -32,26 +41,9 @@ class CarrinhoPage {
         return cy.get('.checkout-button');
     }
 
-    loginLinkCheckout() {
-        return cy.get('.showlogin');
-    }
-
-    paymentMethod() {
-        return cy.get('[name="payment_method"]');
-    }
-
-    termsCheckbox() {
-        return cy.get('[name="terms"]');
-    }
-
-    placeOrderButton() {
-        return cy.get('[name="woocommerce_checkout_place_order"]');
-    }
-
-    orderSuccessMessage() {
-        return cy.get('.woocommerce-notice');
-    }
-
+    // =========================
+    // Mensagens / feedback
+    // =========================
     successMessage() {
         return cy.get('.woocommerce-message');
     }
@@ -60,12 +52,21 @@ class CarrinhoPage {
         return cy.get('.woocommerce-error');
     }
 
+    // Mensagem genérica (sucesso ou erro) para validar aplicação de cupom
+    noticeMessage() {
+        return cy.get('.woocommerce-message, .woocommerce-error');
+    }
+
+    // =========================
+    // Valores e cupons
+    // =========================
+
     // Retorna o valor total do carrinho (posição 7)
     valorTotalCarrinho() {
         return cy
             .get('.woocommerce-Price-amount.amount')
             .eq(7)
-            .invoke('text')
+            .invoke('text');
     }
 
     couponInput() {
@@ -75,6 +76,13 @@ class CarrinhoPage {
     applyCouponButton() {
         return cy.get('[name="apply_coupon"]');
     }
-}
 
+    // =========================
+    // Conteúdo de checkout
+    // =========================
+    pageTitle() {
+        return cy.get('.page-title');
+    }
+
+}
 export default new CarrinhoPage();
