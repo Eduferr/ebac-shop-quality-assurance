@@ -60,13 +60,8 @@ class CarrinhoPage {
     // =========================
     // Valores e cupons
     // =========================
-
-    // Retorna o valor total do carrinho (posição 7)
     valorTotalCarrinho() {
-        return cy
-            .get('.woocommerce-Price-amount.amount')
-            .eq(7)
-            .invoke('text');
+        return cy.get('tr.order-total .woocommerce-Price-amount.amount');
     }
 
     couponInput() {

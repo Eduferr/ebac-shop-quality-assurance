@@ -44,6 +44,17 @@ When('aplica o cupom de desconto {string}', (cupom) => {
     CarrinhoActions.aplicarCupom(cupom);
 });
 
+When('adiciona um produto ao carrinho com quantidade {int}', function (quantidade) {
+    this.quantidade = quantidade;
+
+    cy.fixture('produtos').then((produtos) => {
+        CarrinhoActions.adicionarProdutos(produtos, [
+            { posicao: 0, quantidade }
+        ]);
+    });
+});
+
+
 When('adiciona produtos ao carrinho com quantidades {int}, {int}, {int}', (q1, q2, q3) => {
     const posicoes = [
         { posicao: 4, quantidade: q1 },
@@ -51,7 +62,7 @@ When('adiciona produtos ao carrinho com quantidades {int}, {int}, {int}', (q1, q
         { posicao: 6, quantidade: q3 },
     ];
     cy.fixture('produtos').then((produtos) => {
-        CarrinhoActions.adicionarMultiplosProdutos(produtos, posicoes);
+        CarrinhoActions.adicionarProdutos(produtos, posicoes);
     });
 });
 
@@ -59,12 +70,12 @@ When('adiciona produtos ao carrinho com quantidades {int}, {int}, {int}', (q1, q
 // =========================
 // THEN (Então)
 // =========================
-Then('o sistema deve validar o limite de quantidade', () => {
-    CarrinhoActions.validarLimiteQuantidade(produto);
+Then('o sistema deve validar o limite de quantidade', function() {
+    CarrinhoActions.validarLimiteQuantidade(this.quantidade);
 });
 
-Then('o sistema deve validar o limite de compra', () => {
-    CarrinhoActions.validarLimiteCompra(produto);
+Then('o sistema deve validar o limite de compra do carrinho', () => {
+    CarrinhoActions.validarLimiteCompra();
 });
 
 Then('o sistema deve validar a aplicação do cupom {string}', (cupom) => {
