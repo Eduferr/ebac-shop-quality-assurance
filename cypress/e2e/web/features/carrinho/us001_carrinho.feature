@@ -8,12 +8,10 @@ Funcionalidade: Carrinho de Compras
     Esquema do Cenário: Validar limite de compra de um produto | <descricao>
         Quando adiciona um produto ao carrinho com quantidade <quantidade>
         Então o sistema deve validar o limite de quantidade
-
     Exemplos:
         | descricao                             | quantidade |
         | Até 10 unidades - Compra válida       | 10         |
         | Mais de 10 unidades - Compra inválida | 11         |
-
 
 
     # O boundary testing exato do valor R$ 990,00 não pôde ser realizado em nível de interface Web, 
@@ -25,12 +23,10 @@ Funcionalidade: Carrinho de Compras
         E acessa o carrinho
         E tenta finalizar a compra
         Então o sistema deve validar o limite de compra do carrinho
-
     Exemplos:
         | descricao                             | q1 | q2 | q3 |
         | Até R$ 990,00 - Compra válida         | 4  | 6  | 5  |
         | Acima de R$ 990,00 - Compra inválida  | 4  | 7  | 4  |
-
 
 
     Esquema do Cenário: Validar aplicação de cupom no carrinho | <descricao>
@@ -38,7 +34,6 @@ Funcionalidade: Carrinho de Compras
         E acessa o carrinho
         E aplica o cupom de desconto "<cupom>"
         Então o sistema deve validar a aplicação do cupom "<cupom>"
-
     Exemplos:
         | descricao                                             | q1 | q2 | q3 | cupom     |
         | Cupom 10% inválido - Valor abaixo de R$ 200           | 1  | 1  | 1  | techugo10 |
