@@ -31,17 +31,21 @@ Funcionalidade: Serviço de Cupons - EBAC SHOP
 
     Esquema do Cenário: Não permitir cadastro de cupom com dados obrigatórios inválidos - <descricao>
         Dado que o admin realiza a requisição com autenticação valida
-        Quando realizar o cadastro de um novo cupom com dados inválidos e código dinâmico:
+        Quando realizar o cadastro de um novo cupom com dados inválidos:
+            | code          | <code>          |
             | amount        | <amount>        |
             | discount_type | <discount_type> |
             | description   | <description>   |
         Então a API deve retornar erro de validação no cadastro de cupom
 
     Exemplos:
-        | descricao                  | amount | discount_type  | description                         |
-        | Valor ausente              |        | fixed_product  | Cupom criado via teste automatizado |
-        | Tipo de desconto inválido  | 10.00  | tipo_invalido  | Cupom criado via teste automatizado |
-        | Descrição ausente          | 10.00  | fixed_product  |                                     |
+        | descricao                  | code      | amount | discount_type  | description                         |
+        | Código ausente             |           | 10.00  | fixed_product  | Cupom criado via teste automatizado |
+        | Valor ausente              | DINAMICO  |        | fixed_product  | Cupom criado via teste automatizado |
+        | Tipo de desconto inválido  | DINAMICO  | 10.00  | tipo_invalido  | Cupom criado via teste automatizado |
+        | Descrição ausente          | DINAMICO  | 10.00  | fixed_product  |                                     |
+
+
 
 
 

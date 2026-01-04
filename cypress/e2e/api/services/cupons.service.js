@@ -78,19 +78,28 @@ class CuponsService {
         });
     }
 
-    /* Criação com código dinâmico + body parcial controlado na step (dados inválidos) */
-    static criarCupomComBodyParcial(bodyParcial) {
+    static criarCupomComRegrasDeNegocio(data) {
+        const body = {};
+
+        // ---- REGRA DO CODE ----
+        if (data.code === 'DINAMICO') {
+            body.code = gerarCodigoCupom('cupomFerr');
+        }
+
+        // Se code vier vazio → não envia
+        if (data.amount) body.amount = data.amount;
+        if (data.discount_type) body.discount_type = data.discount_type;
+        if (data.description) body.description = data.description;
+
         return cy.request({
             method: 'POST',
             url: '/wp-json/wc/v3/coupons',
             headers: this.getAuthHeader(),
-            body: {
-                code: gerarCodigoCupom('cupomFerr'),
-                ...bodyParcial
-            },
+            body,
             failOnStatusCode: false
         });
     }
+
 
 }
 

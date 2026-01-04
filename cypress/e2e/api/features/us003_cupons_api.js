@@ -8,16 +8,12 @@ let authType;
 // GIVEN (Contexto / Estado do sistema)
 // ======================================================
 
-Given(
-  'que o admin realiza a requisição com autenticação {word}',
-  (tipoAuth) => {
+Given('que o admin realiza a requisição com autenticação {word}', (tipoAuth) => {
     authType = tipoAuth;
   }
 );
 
-Given(
-  'já existe um cupom cadastrado com o nome {string}',
-  (codigo) => {
+Given('já existe um cupom cadastrado com o nome {string}', (codigo) => {
     CuponsService.criarCupomComBody({
       code: codigo,
       amount: '10.00',
@@ -49,15 +45,10 @@ When('realizar o cadastro de um novo cupom', () => {
 
 // ---------- Cadastro de cupom com dados inválidos ----------
 
-When('realizar o cadastro de um novo cupom com dados inválidos e código dinâmico:',
-  (dataTable) => {
+When('realizar o cadastro de um novo cupom com dados inválidos:', (dataTable) => {
     const data = dataTable.rowsHash();
 
-    CuponsService.criarCupomComBodyParcial({
-      amount: data.amount || undefined,
-      discount_type: data.discount_type || undefined,
-      description: data.description || undefined
-    }).then((res) => {
+    CuponsService.criarCupomComRegrasDeNegocio(data).then((res) => {
       response = res;
     });
   }
@@ -66,15 +57,15 @@ When('realizar o cadastro de um novo cupom com dados inválidos e código dinâm
 // ---------- Cadastro de cupom com nome duplicado ----------
 
 When('tentar cadastrar um novo cupom com o mesmo nome {string}', (codigo) => {
-    CuponsService.criarCupomComBody({
-      code: codigo,
-      amount: '15.00',
-      discount_type: 'fixed_product',
-      description: 'Tentativa de duplicação'
-    }).then((res) => {
-      response = res;
-    });
-  }
+  CuponsService.criarCupomComBody({
+    code: codigo,
+    amount: '15.00',
+    discount_type: 'fixed_product',
+    description: 'Tentativa de duplicação'
+  }).then((res) => {
+    response = res;
+  });
+}
 );
 
 // ======================================================
