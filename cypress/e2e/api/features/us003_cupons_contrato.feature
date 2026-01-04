@@ -6,3 +6,6 @@ Funcionalidade: Contrato da API de Cupons
         Dado que o admin está autenticado na API
         Quando realizar a requisição de listagem de cupons
         Então o contrato do cupom deve estar de acordo com o esperado
+
+
+    # Idealmente, também validar contrato do cupom retornado no POST

@@ -2,6 +2,6 @@
  * Combina um nome base com um número aleatório, evitando duplicidade. */
 
 export function gerarCodigoCupom(nomeBase = 'cupom') {
-  const numero = Math.floor(Math.random() * 100);
+  const numero = Math.floor(Math.random() * 1000);
   return `${nomeBase}${numero}`;
 }
