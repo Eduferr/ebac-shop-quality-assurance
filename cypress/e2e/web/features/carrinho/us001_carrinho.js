@@ -3,17 +3,20 @@ import CarrinhoActions from '../../pages/actions/CarrinhoActions';
 
 let produto;
 
-// =========================
-// GIVEN (Dado)
-// =========================
+// ======================================================
+// GIVEN (Contexto inicial)
+// ======================================================
+
 Given('que o usuário acessa a página de produtos', () => {
     cy.visit('/produtos');
 });
 
+// ======================================================
+// WHEN (Ações do usuário)
+// ======================================================
 
-// =========================
-// WHEN (Quando)
-// =========================
+// ---------- Busca e seleção de produto ----------
+
 When('busca um produto pelo nome na posição {int}', (posicao) => {
     cy.fixture('produtos').then((produtos) => {
         produto = produtos[posicao];
@@ -28,6 +31,8 @@ When('seleciona suas características com quantidade {int}', (quantidade) => {
     );
 });
 
+// ---------- Ações no carrinho ----------
+
 When('adiciona o produto ao carrinho', () => {
     CarrinhoActions.adicionarAoCarrinho();
 });
@@ -40,37 +45,43 @@ When('tenta finalizar a compra', () => {
     CarrinhoActions.concluirCompra();
 });
 
+// ---------- Aplicação de cupom ----------
+
 When('aplica o cupom de desconto {string}', (cupom) => {
     CarrinhoActions.aplicarCupom(cupom);
 });
 
+// ---------- Inclusão de produtos com quantidade ----------
+
 When('adiciona um produto ao carrinho com quantidade {int}', function (quantidade) {
-    this.quantidade = quantidade;
+        this.quantidade = quantidade;
 
-    cy.fixture('produtos').then((produtos) => {
-        CarrinhoActions.adicionarProdutos(produtos, [
-            { posicao: 0, quantidade }
-        ]);
-    });
-});
-
+        cy.fixture('produtos').then((produtos) => {
+            CarrinhoActions.adicionarProdutos(produtos, [
+                { posicao: 0, quantidade }
+            ]);
+        });
+    }
+);
 
 When('adiciona produtos ao carrinho com quantidades {int}, {int}, {int}', (q1, q2, q3) => {
-    const posicoes = [
-        { posicao: 4, quantidade: q1 },
-        { posicao: 5, quantidade: q2 },
-        { posicao: 6, quantidade: q3 },
-    ];
-    cy.fixture('produtos').then((produtos) => {
-        CarrinhoActions.adicionarProdutos(produtos, posicoes);
-    });
-});
+        const posicoes = [
+            { posicao: 4, quantidade: q1 },
+            { posicao: 5, quantidade: q2 },
+            { posicao: 6, quantidade: q3 }
+        ];
 
+        cy.fixture('produtos').then((produtos) => {
+            CarrinhoActions.adicionarProdutos(produtos, posicoes);
+        });
+    }
+);
 
-// =========================
-// THEN (Então)
-// =========================
-Then('o sistema deve validar o limite de quantidade', function() {
+// ======================================================
+// THEN (Validações)
+// ======================================================
+
+Then('o sistema deve validar o limite de quantidade', function () {
     CarrinhoActions.validarLimiteQuantidade(this.quantidade);
 });
 

@@ -44,6 +44,7 @@ class CarrinhoActions {
     // =========================
     // Fluxos compostos
     // =========================
+    
     adicionarProdutos(produtos, posicoes) {
         posicoes.forEach(({ posicao, quantidade }) => {
             if (quantidade <= 0) return;
@@ -63,6 +64,7 @@ class CarrinhoActions {
     // =========================
     // Validações de regras de negócio
     // =========================
+
     validarLimiteQuantidade(quantidade) {
 
         if (quantidade <= 10) {
@@ -121,11 +123,10 @@ class CarrinhoActions {
         });
     }
 
-
-
     // =========================
     // Cupons de desconto
     // =========================
+
     aplicarCupom(cupom) {
         CarrinhoPage.couponInput()
             .clear()

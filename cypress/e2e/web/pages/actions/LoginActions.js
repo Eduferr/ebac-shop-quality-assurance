@@ -2,23 +2,24 @@ import LoginPage from '../pageObjects/LoginPage';
 
 class LoginActions {
 
-  // =========================
-  // Estado
-  // =========================
+  // ======================================================
+  // ESTADO
+  // ======================================================
+
   tentativaAtual = 0;
 
-  
-  // =========================
-  // Navegação
-  // =========================
+  // ======================================================
+  // NAVEGAÇÃO
+  // ======================================================
+
   acessarTelaLogin() {
     cy.visit('minha-conta/');
   }
 
+  // ======================================================
+  // AÇÕES BÁSICAS (BAIXO NÍVEL)
+  // ======================================================
 
-  // =========================
-  // Ações básicas (baixo nível)
-  // =========================
   preencherCredenciais(usuario, senha) {
     LoginPage.getUsername().clear().type(usuario);
     LoginPage.getPassword().clear().type(senha);
@@ -28,10 +29,10 @@ class LoginActions {
     LoginPage.getLoginButton().click();
   }
 
+  // ======================================================
+  // AÇÕES COMPOSTAS (FLUXOS DE LOGIN)
+  // ======================================================
 
-  // =========================
-  // Ações compostas (fluxos)
-  // =========================
   realizarLogin(usuario, senha) {
     this.preencherCredenciais(usuario, senha);
     this.submeterLogin();
@@ -64,10 +65,10 @@ class LoginActions {
     this.realizarLogin(usuario, senha);
   }
 
+  // ======================================================
+  // VALIDAÇÕES
+  // ======================================================
 
-  // =========================
-  // Validações
-  // =========================
   validarErroLogin(usuario) {
     const mensagensEsperadas = [
       `Erro: O usuário ${usuario} não está registrado neste site.`,
