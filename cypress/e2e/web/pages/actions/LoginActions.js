@@ -17,7 +17,7 @@ class LoginActions {
   }
 
   // ======================================================
-  // AÇÕES BÁSICAS (BAIXO NÍVEL)
+  // AÇÕES BÁSICAS (baixo nível / interação direta)
   // ======================================================
 
   preencherCredenciais(usuario, senha) {
@@ -30,7 +30,7 @@ class LoginActions {
   }
 
   // ======================================================
-  // AÇÕES COMPOSTAS (FLUXOS DE LOGIN)
+  // FLUXOS DE LOGIN (ações compostas)
   // ======================================================
 
   realizarLogin(usuario, senha) {
@@ -46,10 +46,11 @@ class LoginActions {
     for (let i = 0; i < quantidade; i++) {
       this.tentativaAtual++;
 
-      cy.log(`🟠 Tentativa ${this.tentativaAtual}: login com usuário ${usuario}`);
+      cy.log(
+        `🟠 Tentativa ${this.tentativaAtual}: login com usuário ${usuario}`
+      );
 
       this.realizarLogin(usuario, senha);
-
       cy.wait(300);
     }
   }
@@ -60,7 +61,9 @@ class LoginActions {
     const usuario = Cypress.env('USER');
     const senha = Cypress.env('PASSWORD');
 
-    cy.log(`🔴 Tentativa ${this.tentativaAtual}: login com usuário válido`);
+    cy.log(
+      `🔴 Tentativa ${this.tentativaAtual}: login com usuário válido`
+    );
 
     this.realizarLogin(usuario, senha);
   }
@@ -69,22 +72,53 @@ class LoginActions {
   // VALIDAÇÕES
   // ======================================================
 
-  validarErroLogin(usuario) {
-    const mensagensEsperadas = [
-      `Erro: O usuário ${usuario} não está registrado neste site.`,
-      `Erro: A senha informada para o usuário ${usuario} está incorreta`
-    ];
+  validarLoginComSucesso() {
+    LoginPage.getAccountContent()
+      .should('be.visible');
+  }
 
+  validarErroLogin(usuario) {
     LoginPage.getErrorMessage()
       .should('be.visible')
       .invoke('text')
       .then((texto) => {
+
+        // Caso genérico (sem usuário)
+        if (!usuario) {
+          expect(texto).to.contain('Erro');
+          return;
+        }
+
+        // Caso específico (com usuário)
+        const mensagensEsperadas = [
+          `Erro: O usuário ${usuario} não está registrado neste site.`,
+          `Erro: A senha informada para o usuário ${usuario} está incorreta`
+        ];
+
         const mensagemEncontrada = mensagensEsperadas.find((msg) =>
           texto.includes(msg)
         );
 
         expect(mensagemEncontrada).to.not.be.undefined;
       });
+  }
+
+  validarPermiteNovaTentativa() {
+    cy.get('body').then(($body) => {
+      const existeErro = $body.find('.woocommerce-error').length > 0;
+
+      if (existeErro) {
+        LoginPage.getErrorMessage()
+          .invoke('text')
+          .then((texto) => {
+            expect(texto).to.not.contain('Usuário bloqueado');
+          });
+      }
+    });
+
+    LoginPage.getLoginButton()
+      .should('be.visible')
+      .and('be.enabled');
   }
 
   validarContaBloqueada() {

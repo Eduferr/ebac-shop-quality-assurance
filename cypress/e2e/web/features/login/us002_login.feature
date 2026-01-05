@@ -20,6 +20,9 @@ Funcionalidade: Login de usuário
             | usuário inválido | usuario_invalido | senha_invalida |
             | senha inválida   | admin            | senha_invalida |
 
+    Cenário: Sistema não deve bloquear conta com menos de 3 tentativas inválidas
+        Quando realiza 2 tentativas de login com usuário "admin" e senha "senha_invalida"
+        Então permitir nova tentativa de login
 
     Cenário: Sistema deve bloquear conta após 3 tentativas inválidas
         Quando realiza 3 tentativas de login com usuário "admin" e senha "senha_invalida"
