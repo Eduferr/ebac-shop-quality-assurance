@@ -1,32 +1,59 @@
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import CuponsService from '../services/cupons.service';
 import { cupomSchema } from '../schemas/cupom.schema';
+import { validarContratoCupom } from '../helpers/contratoCupom.helper';
 
 let response;
 
-/* ================= GIVEN (Dado) ================= */
+// ======================================================
+// GIVEN — CONTEXTO / ESTADO DO SISTEMA
+// ======================================================
 
-Given('que o admin está autenticado na API', () => { });
-
-
-/* ================= WHEN (Quando) ================= */
-
-When('realizar a requisição de listagem de cupons', () => {
-    CuponsService.listarCupons().then((res) => {
-        response = res;
-    });
+Given('que o admin está autenticado na API', () => {
+  // Autenticação válida é o comportamento padrão do CuponsService
 });
 
+// ======================================================
+// WHEN — AÇÕES (REQUISIÇÕES)
+// ======================================================
 
-/* ================= THEN (Então) ================== */
+// ---------- GET | Listagem de cupons ----------
+When('realizar a requisição de listagem de cupons', () => {
+  CuponsService.listarCupons().then((res) => {
+    response = res;
+  });
+});
 
-Then('o contrato do cupom deve estar de acordo com o esperado', () => {
+// ---------- POST | Cadastro de cupom ----------
+When('realizar o cadastro de um novo cupom', () => {
+  CuponsService.criarCupom().then((res) => {
+    response = res;
+  });
+});
+
+// ======================================================
+// THEN — VALIDAÇÕES / CONTRATO DA API
+// ======================================================
+
+// ---------- Contrato GET ----------
+Then(
+  'o contrato do cupom retornado no GET deve estar de acordo com o esperado',
+  () => {
     expect(response.status).to.eq(200);
 
-    const cupom = response.body[0]; // valida um item
+    // Valida o contrato de um item da lista retornada
+    const cupom = response.body[0];
+    validarContratoCupom(cupom, cupomSchema);
+  }
+);
 
-    Object.keys(cupomSchema).forEach((campo) => {
-        expect(cupom).to.have.property(campo);
-        expect(typeof cupom[campo]).to.eq(cupomSchema[campo]);
-    });
-});
+// ---------- Contrato POST ----------
+Then(
+  'o contrato do cupom retornado no POST deve estar de acordo com o esperado',
+  () => {
+    expect(response.status).to.eq(201);
+
+    // Valida o contrato do objeto retornado no cadastro
+    validarContratoCupom(response.body, cupomSchema);
+  }
+);

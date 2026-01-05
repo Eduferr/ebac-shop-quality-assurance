@@ -6,7 +6,7 @@ class CuponsService {
     // HEADERS / AUTENTICAÇÃO
     // ======================================================
 
-    /* Retorna o header de autenticação (padrão: válida) */
+    /* Retorna o header de autenticação */
     static getAuthHeader(tipoAuth = 'valida') {
 
         if (tipoAuth === 'invalida') {
@@ -30,10 +30,10 @@ class CuponsService {
     }
 
     // ======================================================
-    // CONSULTA / LISTAGEM
+    // MÉTODOS GET (CONSULTA)
     // ======================================================
 
-    /* Realiza a requisição para listar todos os cupons cadastrados */
+    /* Lista todos os cupons */
     static listarCupons(tipoAuth = 'valida') {
         return cy.request({
             method: 'GET',
@@ -43,12 +43,22 @@ class CuponsService {
         });
     }
 
+    /* Busca cupom por ID */
+    static buscarCupomPorId(id, tipoAuth = 'valida') {
+        return cy.request({
+            method: 'GET',
+            url: `/wp-json/wc/v3/coupons/${id}`,
+            headers: this.getAuthHeader(tipoAuth),
+            failOnStatusCode: false
+        });
+    }
+
     // ======================================================
-    // CADASTRO DE CUPONS
+    // MÉTODOS POST (CRIAÇÃO SIMPLES)
     // ======================================================
 
-    /* Criação padrão */
-    static criarCupom() {
+    /* Cria cupom padrão */
+    static criarCupom(tipoAuth = 'valida') {
         const codigoCupom = gerarCodigoCupom('cupomEdu');
 
         const body = {
@@ -61,13 +71,13 @@ class CuponsService {
         return cy.request({
             method: 'POST',
             url: '/wp-json/wc/v3/coupons',
-            headers: this.getAuthHeader(),
+            headers: this.getAuthHeader(tipoAuth),
             body,
             failOnStatusCode: false
         });
     }
 
-    /* Criação com body totalmente controlado na step */
+    /* Cria cupom com body controlado na step */
     static criarCupomComBody(body) {
         return cy.request({
             method: 'POST',
@@ -78,6 +88,10 @@ class CuponsService {
         });
     }
 
+    // ======================================================
+    // MÉTODOS POST COMPOSTOS (REGRA DE NEGÓCIO)
+    // ======================================================
+
     static criarCupomComRegrasDeNegocio(data) {
         const body = {};
 
@@ -86,7 +100,7 @@ class CuponsService {
             body.code = gerarCodigoCupom('cupomFerr');
         }
 
-        // Se code vier vazio → não envia
+        // Se vier preenchido, envia
         if (data.amount) body.amount = data.amount;
         if (data.discount_type) body.discount_type = data.discount_type;
         if (data.description) body.description = data.description;
@@ -99,8 +113,6 @@ class CuponsService {
             failOnStatusCode: false
         });
     }
-
-
 }
 
 export default CuponsService;
