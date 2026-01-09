@@ -14,23 +14,31 @@
   "author": "EduardoFerreira",
   "type": "commonjs",
   "main": "index.js",
-  "scripts": {
-    "test:ui": "cypress run",
-    "test:api": "cucumber-js",
-    "test:mob": "npx wdio run ./wdio.conf.js && npm run report:mobile",
-    "test:perf": "k6 run performance/scenarios/index.js && npm run report:performance",
+"scripts": {
 
-    "test:all": "npm run test:ui && npm run test:api && npm run test:mobile && npm run test:performance",
+    "clean:api": "rimraf --glob \"allure/api-tests/api-results/**\"",
+    "clean:ui": "rimraf --glob \"allure/ui-tests/ui-results/**\"",
+    "clean:mob": "rimraf --glob \"allure/mobile-tests/mobile-results/**\"",
 
+    "test:ui": "npm run clean:ui && cypress run",
+    "test:api": "npm run clean:api && cucumber-js",
+    "test:mob": "npm run clean:mob && npx wdio run ./wdio.conf.js",
+    "test:perf:login": "k6 run ./performance/run.login.js",
+    "test:perf:produto": "k6 run ./performance/run.produto.get.js",
+    "test:perf:all": "npm run test:perf:login && npm run test:perf:produto",
+
+    "test:all": "npm run test:ui && npm run test:api && npm run test:mob && npm run test:perf",
+    
     "report:ui": "npx allure generate allure/ui-tests/ui-results -o allure/ui-tests/ui-report --clean",
     "report:api": "npx allure generate allure/api-tests/api-results -o allure/api-tests/api-report --clean",
     "report:mob": "npx allure generate allure/mobile-tests/mobile-results -o allure/mobile-tests/mobile-report --clean",
-    "report:perf": "npx allure generate allure/performance-tests/performance-results -o allure/performance-tests/performance-report --clean",
-
-    "open:ui": "npx allure open allure/ui-tests/ui-report",
-    "open:api": "npx allure open allure/api-tests/api-report",
-    "open:mob": "npx allure open allure/mobile-tests/mobile-report",
-    "open:perf": "npx allure open allure/performance-tests/performance-report"
+    
+    "open_report:ui": "npx allure open allure/ui-tests/ui-report",
+    "open_report:api": "npx allure open allure/api-tests/api-report",
+    "open_report:mob": "npx allure open allure/mobile-tests/mobile-report",
+    "open_report:perf:login": "start performance/reports/login/login-report.html",
+    "open_report:perf:produto": "start performance/reports/produto/produto-report.html",
+    "open_report:perf:all": "npm run open_report:perf:login && npm run open_report:perf:produto"
   },
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^24.0.0",
