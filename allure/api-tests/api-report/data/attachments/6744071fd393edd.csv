@@ -1,0 +1,5 @@
+descricao,code,amount,discount_type,description
+Código ausente,,10.00,fixed_product,Cupom criado via teste automatizado
+Valor ausente,DINAMICO,,fixed_product,Cupom criado via teste automatizado
+Tipo de desconto inválido,DINAMICO,10.00,tipo_invalido,Cupom criado via teste automatizado
+Descrição ausente,DINAMICO,10.00,fixed_product,

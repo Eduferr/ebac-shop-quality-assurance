@@ -1,0 +1,3 @@
+descricao,tipo_auth
+Sem autenticação,sem_auth
+Com autenticação inválida,invalida

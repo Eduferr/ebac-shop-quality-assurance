@@ -1,0 +1,1 @@
+{"total":2,"items":[{"uid":"da7afdf647b10ca9166fd145cdd66f96","name":"Serviço de Cupons - EBAC SHOP","statistic":{"failed":2,"broken":0,"skipped":0,"passed":9,"unknown":0,"total":11}},{"uid":"8347faa029c6fc1cacc2ecdd1cdd72cc","name":"Contrato da API de Cupons","statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2}}]}

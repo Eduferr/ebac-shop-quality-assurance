@@ -1,4 +1,6 @@
 .env
-allure-results/
+#allure-results/
 allure-report/
 node_modules/
+/mobile/app/
+cypress/screenshots/

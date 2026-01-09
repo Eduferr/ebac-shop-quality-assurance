@@ -1,36 +1,30 @@
 const { defineConfig } = require('cypress');
 const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
-const {
-  addCucumberPreprocessorPlugin,
-} = require('@badeball/cypress-cucumber-preprocessor');
-const {
-  createEsbuildPlugin,
-} = require('@badeball/cypress-cucumber-preprocessor/esbuild');
+const { addCucumberPreprocessorPlugin } = require('@badeball/cypress-cucumber-preprocessor');
+const { createEsbuildPlugin } = require('@badeball/cypress-cucumber-preprocessor/esbuild');
+const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 
 require('dotenv').config();
-
-//Para verificar se a variável de autenticação está sendo carregada corretamente
-//console.log('BASIC_AUTH no config:', process.env.BASIC_AUTH);
-
-const testType = process.env.TEST_TYPE || 'web';
 
 module.exports = defineConfig({
   e2e: {
     baseUrl: process.env.BASE_URL || 'http://lojaebac.ebaconline.art.br',
 
-    // Carrega WEB + API
-    specPattern: [
-      'cypress/e2e/web/features/**/*.feature',
-      'cypress/e2e/api/features/**/*.feature'
-    ],
+    // Testes de UI (Web)
+    specPattern: ['ui/cypress/e2e/features/**/*.feature'],
+    supportFile: 'ui/cypress/support/e2e.js',
+    fixturesFolder: 'ui/cypress/fixtures',
 
-    supportFile: 'cypress/support/e2e.js',
+    // ALLURE – caminho correto (PASTA, não arquivo)
+    env: {
+      allure: true,
+      allureResultsPath: 'allure/ui-tests/ui-results',
+    },
 
     async setupNodeEvents(on, config) {
-      // registra o plugin do cucumber
+      // Cucumber
       await addCucumberPreprocessorPlugin(on, config);
 
-      // registrar o preprocessor do esbuild
       on(
         'file:preprocessor',
         createBundler({
@@ -38,14 +32,19 @@ module.exports = defineConfig({
         })
       );
 
-      // variáveis de ambiente UI a partir do .env
+      // REGISTRO OBRIGATÓRIO DO ALLURE
+      allureWriter(on, config);
+
+      // Variáveis de ambiente UI
       config.env.USER = process.env.CYPRESS_USER;
       config.env.PASSWORD = process.env.CYPRESS_PASSWORD;
-
-      // Variavel de ambiente API a partir do .env
-      config.env.BASIC_AUTH = process.env.BASIC_AUTH;
 
       return config;
     },
   },
+
+  // DESATIVA screenshots e vídeos padrão do Cypress
+  screenshotOnRunFailure: false,
+  screenshotsFolder: false,
+  video: false,
 });
